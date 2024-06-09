@@ -1,0 +1,46 @@
+.container {
+  margin: auto;
+  padding: 20px;
+  max-width: 400px;
+}
+
+.roundedField {
+  border-radius: 1rem;
+  border-color: black;
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.roundedField label {
+  color: rgb(0, 0, 0);
+  font-size: 1.2rem;
+}
+
+.roundedField input {
+  border-radius: 1rem;
+  border-color: black;
+  background-color: #FFFFFF;
+  color: rgb(0, 0, 0);
+  font-size: 1rem;
+  padding: 10px;
+}
+
+.roundedField textarea {
+  border-radius: 1rem;
+  border-color: black;
+  background-color: #FFFFFF;
+  color: rgb(0, 0, 0);
+  font-size: 1rem;
+  padding-bottom: 40%;
+}
+
+.btn-primary {
+  background-color: black;
+  border-color: black;
+  font-size: 1.2rem;
+}
+
+.btn-primary:hover {
+  background-color: #333333;
+  border-color: #333333;
+}
