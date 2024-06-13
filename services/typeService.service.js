@@ -1,10 +1,9 @@
-
 import getConfig from 'next/config';
 import { fetchWrapper } from 'helpers';
 const { publicRuntimeConfig } = getConfig();
-const baseUrl = `${publicRuntimeConfig.apiUrl}/client`;
+const baseUrl = `${publicRuntimeConfig.apiUrl}/typeService`;
 
-export const clientService = {
+export const typeServiceService = {
 
     create,
     getAll,
@@ -13,8 +12,8 @@ export const clientService = {
     changeStatus,
     getByStatus
 };
-async function create(client) {
-    return await fetchWrapper.post(`${baseUrl}/create`, client);
+async function create(typeService) {
+    return await fetchWrapper.post(`${baseUrl}/create`, typeService);
 }
 async function getAll() {
     return await fetchWrapper.get(baseUrl);
@@ -30,7 +29,7 @@ async function changeStatus(id) {
     await fetchWrapper.put(`${baseUrl}/getByStatus/${id}`)
 }
 
-async function getByStatus(status){
+async function getByStatus(status) {
     console.log(status)
-  return await fetchWrapper.put(`${baseUrl}/getByStatus`, {status:status})
+    return await fetchWrapper.put(`${baseUrl}/getByStatus`, { status: status })
 }

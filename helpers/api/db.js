@@ -22,39 +22,48 @@ async function initialize() {
 
 	// init models and add them to the exported db object
 	db.User = userModel(sequelize);
-	db.Client = client(sequelize);
-	db.Event = event(sequelize);
-	db.Context = context(sequelize);
-	db.Target = target(sequelize);
-	db.TargetType = targetType(sequelize);
-	db.Keypoints = keypoints(sequelize);
-	db.Anexos = anexos(sequelize);
-	db.DataBase = dataBase(sequelize);
+	db.Personal = personal(sequelize);
+	db.Rango = rango(sequelize);
+	db.TypeService = typeService(sequelize);
+	db.TypeUnidad = typeUnidad(sequelize);
+	db.Unidad = unidad(sequelize);
+	db.Hospital = hospital(sequelize);
+	db.Boleta = boleta(sequelize);
+	db.Reporte = reporte(sequelize);
 
-	// define model associations
-	db.Event.belongsTo(db.Client);
-	db.Client.hasMany(db.Event);
+	// create associations
+	db.Personal.belongsTo(db.Rango);
+	db.Rango.hasMany(db.Personal);
 
-	db.Event.hasMany(db.Context);
-	db.Context.belongsTo(db.Event);
+	db.Unidad.belongsTo(db.TypeUnidad);
+	db.TypeUnidad.hasMany(db.Unidad);
 
-	db.Event.hasMany(db.Target);
-	db.Target.belongsTo(db.Event);
+	db.Boleta.belongsTo(db.Unidad);
+	db.Unidad.hasMany(db.Boleta);
 
-	db.Target.belongsTo(db.TargetType);
-	db.TargetType.hasMany(db.Target);
+	db.Boleta.belongsTo(db.Personal);
+	db.Personal.hasMany(db.Boleta);
 
-	db.Event.hasMany(db.Keypoints);
-	db.Keypoints.belongsTo(db.Event);
+	db.Boleta.belongsTo(db.TypeService);
+	db.TypeService.hasOne(db.Boleta);
 
-	db.Event.hasMany(db.Anexos);
-	db.Anexos.belongsTo(db.Event);
+	db.Reporte.belongsTo(db.Boleta);
+	db.Boleta.hasOne(db.Reporte);
 
-	db.Event.hasMany(db.DataBase);
-	db.DataBase.belongsTo(db.Event);
+	db.Reporte.belongsTo(db.Hospital);
+	db.Hospital.hasOne(db.Reporte);
+
+	db.Reporte.belongsTo(db.Personal);
+	db.Personal.hasMany(db.Reporte);
+
+	db.Reporte.belongsTo(db.Unidad);
+	db.Unidad.hasMany(db.Reporte);
+
+	db.Reporte.belongsTo(db.TypeService);
+	db.TypeService.hasOne(db.Reporte);
 
 	// sync all models with database
-	// await sequelize.sync({ alter: true });
+	await sequelize.sync({ force: true });
 	//await sequelize.sync();
 
 	db.initialized = true;
@@ -85,100 +94,105 @@ function userModel(sequelize) {
 	return sequelize.define("User", attributes, options);
 }
 
-function client(sequelize) {
+function personal(sequelize) { //
 	const attributes = {
 		name: { type: DataTypes.STRING, allowNull: false },
-		logo: { type: DataTypes.STRING, allowNull: true },
+		lastName: { type: DataTypes.STRING, allowNull: false },
+		userName: { type: DataTypes.STRING, allowNull: false },
+		phone: { type: DataTypes.STRING, allowNull: true },
+		carne: { type: DataTypes.STRING, allowNull: true },
 		status: { type: DataTypes.BOOLEAN, allowNull: true },
 	};
 
-	return sequelize.define("Client", attributes);
+	return sequelize.define("Personal", attributes);
 }
 
-function event(sequelize) {
+function rango(sequelize) { //
 	const attributes = {
 		name: { type: DataTypes.STRING, allowNull: false },
 		status: { type: DataTypes.BOOLEAN, allowNull: true },
 	};
 
-	return sequelize.define("Event", attributes);
+	return sequelize.define("Rango", attributes);
 }
 
-function context(sequelize) {
+function typeService(sequelize) { //
 	const attributes = {
-		imageURL: { type: DataTypes.STRING, allowNull: true },
-		introduction: { type: DataTypes.TEXT, allowNull: true },
-		eventFormat: { type: DataTypes.TEXT, allowNull: true },
-		fecha: { type: DataTypes.STRING, allowNull: true },
-		lugar: { type: DataTypes.STRING, allowNull: true },
-		hora: { type: DataTypes.STRING, allowNull: true },
+		name: { type: DataTypes.STRING, allowNull: false },
 		status: { type: DataTypes.BOOLEAN, allowNull: true },
 	};
 
-	return sequelize.define("Context", attributes);
+	return sequelize.define("TypeService", attributes);
 }
-
-function target(sequelize) {
+function typeUnidad(sequelize) { //
 	const attributes = {
-		name: { type: DataTypes.STRING, allowNull: true },
-		count: { type: DataTypes.STRING, allowNull: true },
+		name: { type: DataTypes.STRING, allowNull: false },
 		status: { type: DataTypes.BOOLEAN, allowNull: true },
 	};
 
-	return sequelize.define("Target", attributes);
+	return sequelize.define("TypeUnidad", attributes);
 }
-
-function targetType(sequelize) {
+function unidad(sequelize) { //
 	const attributes = {
-		name: { type: DataTypes.STRING, allowNull: true },
+		placa: { type: DataTypes.STRING, allowNull: false },
 		status: { type: DataTypes.BOOLEAN, allowNull: true },
 	};
 
-	return sequelize.define("TargetType", attributes);
+	return sequelize.define("Unidad", attributes);
 }
-
-function keypoints(sequelize) {
+function hospital(sequelize) { //
 	const attributes = {
-		imageURL: { type: DataTypes.STRING, allowNull: true },
-		countInvitados: { type: DataTypes.INTEGER, allowNull: true },
-		countAsistentesReales: { type: DataTypes.INTEGER, allowNull: true },
-		countIndustrias: { type: DataTypes.INTEGER, allowNull: true },
-		countSatisfaccion: { type: DataTypes.INTEGER, allowNull: true },
-		countPromotor: { type: DataTypes.INTEGER, allowNull: true },
-		countPasivo: { type: DataTypes.INTEGER, allowNull: true },
-		countDetractor: { type: DataTypes.INTEGER, allowNull: true },
-		countNPS: { type: DataTypes.INTEGER, allowNull: true },
-		status: { type: DataTypes.BOOLEAN, allowNull: true },
-	};
-	return sequelize.define("Keypoints", attributes);
-}
-
-function anexos(sequelize) {
-	const attributes = {
-		imageURLSaveTheDate: { type: DataTypes.STRING, allowNull: true },
-		imageURLInvitacionOficial: { type: DataTypes.STRING, allowNull: true },
-		imageURLFotoEvento1: { type: DataTypes.STRING, allowNull: true },
-		imageURLFotoEvento2: { type: DataTypes.STRING, allowNull: true },
-		imageURLFotoEvento3: { type: DataTypes.STRING, allowNull: true },
-		imageURLFotoEvento4: { type: DataTypes.STRING, allowNull: true },
-		imageURLFotoEvento5: { type: DataTypes.STRING, allowNull: true },
-		imageURLFotoEvento6: { type: DataTypes.STRING, allowNull: true },
-		imageURLFotoEvento7: { type: DataTypes.STRING, allowNull: true },
-		imageURLFotoEvento8: { type: DataTypes.STRING, allowNull: true },
-		imageURLPromocionales: { type: DataTypes.STRING, allowNull: true },
-		imageURLMaterialImpreso: { type: DataTypes.STRING, allowNull: true },
+		name: { type: DataTypes.STRING, allowNull: false },
 		status: { type: DataTypes.BOOLEAN, allowNull: true },
 	};
 
-	return sequelize.define("Anexos", attributes);
+	return sequelize.define("Hospital", attributes);
 }
-
-function dataBase(sequelize) {
+function boleta(sequelize) {
 	const attributes = {
-		imageURLPreview: { type: DataTypes.STRING, allowNull: true },
-		imageURLQR: { type: DataTypes.STRING, allowNull: true },
+		fecha: { type: DataTypes.STRING, allowNull: false },
+		direccion: { type: DataTypes.STRING, allowNull: false },
+		solicitante: { type: DataTypes.STRING, allowNull: false },
+		numeroSolicitante: { type: DataTypes.STRING, allowNull: true },
+		horaSalida: { type: DataTypes.STRING, allowNull: false },
+		horaEntrada: { type: DataTypes.STRING, allowNull: false },
+		unidad: { type: DataTypes.STRING, allowNull: false },
+		piloto: { type: DataTypes.STRING, allowNull: false },
+		responsable: { type: DataTypes.STRING, allowNull: false },
+		servicio: { type: DataTypes.STRING, allowNull: false },
 		status: { type: DataTypes.BOOLEAN, allowNull: true },
 	};
 
-	return sequelize.define("DataBase", attributes);
+	return sequelize.define("Boleta", attributes);
+}
+function reporte(sequelize) {
+	const attributes = {
+		minutosTrabajados: { type: DataTypes.STRING, allowNull: false },
+		solicitud: { type: DataTypes.STRING, allowNull: false },
+		fecha: { type: DataTypes.STRING, allowNull: false },
+		salida: { type: DataTypes.STRING, allowNull: false },
+		horaSalida: { type: DataTypes.STRING, allowNull: false },
+		entrada: { type: DataTypes.STRING, allowNull: false },
+		horaEntrada: { type: DataTypes.STRING, allowNull: false },
+		direccion: { type: DataTypes.STRING, allowNull: false },
+		solicitante: { type: DataTypes.STRING, allowNull: false },
+		pacientes: { type: DataTypes.STRING, allowNull: true },
+		fallecidos: { type: DataTypes.STRING, allowNull: true },
+		opcionFallecidos: { type: DataTypes.STRING, allowNull: false },
+		edades: { type: DataTypes.STRING, allowNull: true },
+		domicilio: { type: DataTypes.STRING, allowNull: false },
+		acompanantes: { type: DataTypes.STRING, allowNull: false },
+		radiotelefonista: { type: DataTypes.STRING, allowNull: false },
+		tipoServicio: { type: DataTypes.STRING, allowNull: false },
+		hospital: { type: DataTypes.STRING, allowNull: true },
+		piloto: { type: DataTypes.STRING, allowNull: false },
+		unidad: { type: DataTypes.STRING, allowNull: false },
+		encargado: { type: DataTypes.STRING, allowNull: false },
+		jefeDeServicio: { type: DataTypes.STRING, allowNull: false },
+		personalDestacado: { type: DataTypes.STRING, allowNull: false },
+		observaciones: { type: DataTypes.text, allowNull: false },
+		status: { type: DataTypes.BOOLEAN, allowNull: true },
+	};
+
+	return sequelize.define("Reporte", attributes);
 }

@@ -1,4 +1,4 @@
-import { clientService } from 'services/client.service';
+import { clientService } from 'services/personal.service';
 import Switch from '@mui/material/Switch';
 import { useState } from 'react';
 import {

@@ -1,25 +1,27 @@
 
 import { db } from "./db";
 
-export const targetTypeRepo = {
+export const rangoRepo = {
     create,
     update,
     getAll
 };
 
-const targetTypeDataToReturn = ['id', 'name', 'status'];
+const rangoDataToReturn = ['id', 'name', 'status'];
 
 async function create() {
     const array = [
-        'Industries',
-        'AssistantProfile'
+        'Clase',
+        'Galonista',
+        'Oficial',
+        'Mayor'
     ]
 
     array.map(async (element) => {
         const index = array.indexOf(element);
-        const ruleId = index >= 0 ? index + 1 : null;
-        let [created] = await db.TargetType.findOrCreate({
-            where: { name: `${element}`, id: ruleId },
+        const rangoId = index >= 0 ? index + 1 : null;
+        let [created] = await db.Rango.findOrCreate({
+            where: { name: `${element}`, id: rangoId },
             defaults: {
                 name: `${element}`, attributes: ['name', 'id']
 
@@ -34,26 +36,26 @@ async function create() {
 }
 
 async function getAll() {
-    return await db.TargetType.findAll({ attributes: targetTypeDataToReturn });
+    return await db.Rango.findAll({ attributes: rangoDataToReturn });
 }
 
 async function update(_id, params) {
-    const targetType = await db.TargetType.findByPk(_id);
-    if (!targetType) {
-        throw 'TargetType not found';
+    const rango = await db.Rango.findByPk(_id);
+    if (!rango) {
+        throw 'Rango not found';
     }
 
     if (!params.name || params.name.trim() === "" || params.name === undefined) {
         throw "name is required";
     }
 
-    await targetType.update({
+    await rango.update({
         name: params.name.trim(),
         status: null
     })
 
     return {
-        name: targetType.name,
+        name: rango.name,
         status: null
     }
 }

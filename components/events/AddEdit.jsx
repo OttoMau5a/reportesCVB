@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { alertService } from "services";
-import { clientService } from "services/client.service";
+import { clientService } from "services/personal.service";
 import { eventService } from "services/event.service";
 import { contextService } from "services/context.service";
 import { targetService } from "services/target.service";

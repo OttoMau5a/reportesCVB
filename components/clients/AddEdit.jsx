@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { alertService } from "services";
-import { clientService } from "services/client.service";
+import { clientService } from "services/personal.service";
 import UploadImg from "components/UploadImg";
 import Swal from "sweetalert2";
 

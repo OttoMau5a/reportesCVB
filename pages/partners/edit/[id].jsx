@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { Layout, AddEdit } from 'components/clients';
 import { Spinner } from 'components';
 import { alertService } from 'services';
-import { clientService } from 'services/client.service';
+import { clientService } from 'services/personal.service';
 export default Edit;
 function Edit() {
     const router = useRouter();

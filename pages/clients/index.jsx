@@ -18,7 +18,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import { Layout } from "components/clients";
 import Link from "next/link";
-import { clientService } from "services/client.service";
+import { clientService } from "services/personal.service";
 import { RowClients } from "components/clients";
 import PinDropIcon from "@mui/icons-material/PinDrop";
 import LanguageIcon from "@mui/icons-material/Language";

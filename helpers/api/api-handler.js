@@ -1,5 +1,7 @@
 import { db, errorHandler, jwtMiddleware} from 'helpers/api';
 import { targetTypeRepo } from './targetType-repo';
+import { rangoRepo } from './rango-repo';
+import { typeUnidadRepo } from './typeUnidad-repo';
 
 export { apiHandler };
 
@@ -18,7 +20,8 @@ function apiHandler(handler) {
 
             // global middleware
             await jwtMiddleware(req, res);
-            targetTypeRepo.create();
+            rangoRepo.create();
+            typeUnidadRepo.create();
             // route handler
             await handler[method](req, res);
         } catch (err) {
